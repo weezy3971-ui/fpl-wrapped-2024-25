@@ -18,7 +18,6 @@ A personal **Fantasy Premier League season wrap-up** web app — your FPL stats 
 - **React 19** + **TypeScript**
 - **Vite 6** — build tooling
 - **Recharts** — data visualisation
-- **Supabase Edge Functions** — server-side FPL API proxy (no CORS issues)
 
 ## Getting Started
 
@@ -32,13 +31,9 @@ npm run dev
 Create a `.env` file (see `.env.example`):
 
 ```
-VITE_SUPABASE_PROXY_URL=https://YOUR_PROJECT_REF.supabase.co/functions/v1/fpl-proxy
 GEMINI_API_KEY=your_key_here
 ```
 
 ## Deployment
 
-Works on **any platform** (Vercel, Netlify, Cloudflare Pages, etc.).  
-The Supabase Edge Function handles all FPL API proxying server-side.
-
-Set `VITE_SUPABASE_PROXY_URL` in your hosting platform's environment variables dashboard.
+Works on **any platform** (Vercel, Netlify, Cloudflare Pages, etc.).

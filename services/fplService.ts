@@ -3,36 +3,23 @@ import { FplEntry, FplHistory, WrappedData, ChipInfo, PlayerLoyalty, PlayerPerfo
 
 const FPL_BASE_URL = 'https://fantasy.premierleague.com/api';
 
-// Supabase Edge Function proxy URL (set VITE_SUPABASE_PROXY_URL in .env)
-const SUPABASE_PROXY_URL = import.meta.env.VITE_SUPABASE_PROXY_URL as string | undefined;
-
-// Public proxies as fallback only
+// Public CORS proxies — tried in order, falls through on failure
 const PUBLIC_PROXY_URLS = [
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?'
+    { url: 'https://corsproxy.io/?', encode: true },
+    { url: 'https://api.allorigins.win/raw?url=', encode: true },
+    { url: 'https://api.codetabs.com/v1/proxy?quest=', encode: false },
 ];
 
 async function fetchWithRetry(targetUrl: string): Promise<any> {
-    // 1. Try Supabase Edge Function first (reliable, server-side, no CORS)
-    if (SUPABASE_PROXY_URL) {
-        try {
-            const path = targetUrl.replace(FPL_BASE_URL, '');
-            const proxyUrl = `${SUPABASE_PROXY_URL}?path=${encodeURIComponent(path)}`;
-            const res = await fetch(proxyUrl);
-            if (res.status === 404) throw { status: 404, message: "Resource not found" };
-            if (res.ok) return await res.json();
-        } catch (e: any) {
-            if (e.status === 404) throw e;
-            // Fall through to public proxies
-        }
-    }
-
-    // 2. Fall back to public proxies
     for (const proxy of PUBLIC_PROXY_URLS) {
         try {
-            const fullUrl = `${proxy}${encodeURIComponent(targetUrl)}`;
+            const fullUrl = proxy.encode
+                ? `${proxy.url}${encodeURIComponent(targetUrl)}`
+                : `${proxy.url}${targetUrl}`;
             const res = await fetch(fullUrl);
             if (res.status === 404) throw { status: 404, message: "Resource not found" };
+            // Treat 5xx / Cloudflare errors as proxy failures and try the next
+            if (res.status >= 500) continue;
             if (res.ok) {
                 const text = await res.text();
                 return JSON.parse(text);
