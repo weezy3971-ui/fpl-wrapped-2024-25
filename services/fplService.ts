@@ -3,7 +3,7 @@ import { FplEntry, FplHistory, WrappedData, ChipInfo, PlayerLoyalty, PlayerPerfo
 
 const FPL_BASE_URL = 'https://fantasy.premierleague.com/api';
 
-// Public CORS proxies — tried in order, falls through on failure
+// Public CORS proxies - tried in order, falls through on failure
 const PUBLIC_PROXY_URLS = [
     { url: 'https://corsproxy.io/?', encode: true },
     { url: 'https://api.allorigins.win/raw?url=', encode: true },

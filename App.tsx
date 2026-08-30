@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WrappedData } from './types';
 import { fetchFplData } from './services/fplService';
-import { generateManagerAnalysis } from './services/geminiService';
+import { generateManagerAnalysis } from './services/analysisService';
 import Intro from './components/Intro';
 import WrappedView from './components/WrappedView';
 
@@ -19,13 +19,13 @@ const App: React.FC = () => {
       // Strictly fetch real data. If this fails, we throw to catch block.
       const data = await fetchFplData(teamId);
 
-      // 2. Generate AI Analysis
+      // 2. Generate Narrative Analysis
       const analysis = await generateManagerAnalysis(data);
       
       setWrappedData({
         ...data,
-        aiPersona: analysis.persona,
-        aiNarration: analysis.summary
+        persona: analysis.persona,
+        narration: analysis.summary
       });
     } catch (err) {
       console.error(err);

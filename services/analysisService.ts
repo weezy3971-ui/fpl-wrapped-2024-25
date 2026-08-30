@@ -3,7 +3,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { WrappedData } from "../types";
 
 export async function generateManagerAnalysis(data: WrappedData) {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const client = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
   const prompt = `
     Analyze this Fantasy Premier League (FPL) season data for a manager named ${data.managerName}:
@@ -17,7 +17,7 @@ export async function generateManagerAnalysis(data: WrappedData) {
   `;
 
   try {
-    const response = await ai.models.generateContent({
+    const response = await client.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: prompt,
       config: {
@@ -39,7 +39,7 @@ export async function generateManagerAnalysis(data: WrappedData) {
     const result = JSON.parse(text);
     return result as { persona: string; summary: string };
   } catch (error) {
-    console.error("AI Analysis Error:", error);
+    console.error("Analysis Error:", error);
     // Return a solid fallback to ensure the app doesn't break for the user
     return {
       persona: "The Strategic Maverick",

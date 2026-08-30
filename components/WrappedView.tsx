@@ -597,10 +597,10 @@ const WrappedView: React.FC<WrappedViewProps> = ({ data }) => {
     // Slide 14: AI Persona
     <div key="9" className="flex flex-col items-center justify-center h-full text-center p-8 space-y-8 bg-black">
       <div className="text-xs font-black text-green-400 animate-pulse tracking-[0.4em]">SCOUT REPORT</div>
-      <h2 className="text-6xl font-black italic text-white uppercase leading-none tracking-tighter">{data.aiPersona}</h2>
+      <h2 className="text-6xl font-black italic text-white uppercase leading-none tracking-tighter">{data.persona}</h2>
       <div className="glass p-10 rounded-[50px] italic font-medium opacity-90 text-xl leading-relaxed border-2 border-white/5 mx-4 relative bg-zinc-900/40">
         <span className="absolute -top-4 -left-2 text-6xl text-green-400 opacity-20">"</span>
-        {data.aiNarration}
+        {data.narration}
       </div>
     </div>,
 

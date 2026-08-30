@@ -130,6 +130,6 @@ export interface WrappedData {
   runnerUp: PlayerPerformance;
   loyaltyList: PlayerLoyalty[];
   diamondHands: PlayerLoyalty[];
-  aiPersona?: string;
-  aiNarration?: string;
+  persona?: string;
+  narration?: string;
 }
